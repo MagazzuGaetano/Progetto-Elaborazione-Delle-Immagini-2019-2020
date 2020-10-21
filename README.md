@@ -8,6 +8,10 @@
   
   ![Screenshot_2020-02-22_13-04-49](/uploads/72bd6c4de0328afff35c30a5ed853233/Screenshot_2020-02-22_13-04-49.png)
   ![Screenshot_2020-02-22_13-04-13](/uploads/c7617b95df26fc7258b057b2d624ff52/Screenshot_2020-02-22_13-04-13.png)
+  
+  ![](https://gitlab.com/beppe15/progetto-elaborazione-delle-immagini/uploads/72bd6c4de0328afff35c30a5ed853233/Screenshot_2020-02-22_13-04-49.png)
+  ![](https://gitlab.com/beppe15/progetto-elaborazione-delle-immagini/uploads/c7617b95df26fc7258b057b2d624ff52/Screenshot_2020-02-22_13-04-13.png)
+
 
 # Una scatola NON è conforme se:
 
