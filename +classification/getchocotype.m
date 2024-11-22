@@ -1,17 +1,18 @@
 function chocoType = getchocotype(im)
 %GETCHOCOTYPE 
 
-im = imresize(im, [293, 293]);
-im2 = histeq(im);
-
-hog = utils.computehog(im);
-
-R = utils.computelbp(im2(:,:,1));
-G = utils.computelbp(im2(:,:,2));
-B = utils.computelbp(im2(:,:,3));
-lbp = [R G B];
-
+load("Data/mean_std.mat", "train_mean", "train_std");
 load("Data/choco-classifier.mat", "chococlassifier");
-predicted = predict(chococlassifier, [lbp hog]);
-chocoType = predicted{:};
+
+im = im2double(im);
+im = imresize(im, [64 64]);
+hsv_hist = utils.computeColorHist(rgb2hsv(im), 32, [8, 8, 8]);
+lbp = utils.computelbp(rgb2gray(im), [32, 32], 8, 1, true);
+texture = utils.computeLocalTextureDescriptors(im);
+
+X = [hsv_hist texture lbp];
+normalized = (X - train_mean) ./ train_std;
+predicted = predict(chococlassifier, normalized);
+chocoType = convertCharsToStrings(predicted);
+
 end
