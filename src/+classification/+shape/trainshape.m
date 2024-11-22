@@ -11,7 +11,7 @@ for i = 1 : nImages
     eccentricity(i) = props.Eccentricity;
 end
 
-[train, test] = classification.partdata(eccentricity, labels);
+[train, test] = classification.shape.partdata(eccentricity, labels);
 
 r = train.values(train.labels == "rettangolare");
 q = train.values(train.labels == "quadrata");
@@ -26,15 +26,15 @@ classification.confchart(train, test);
 
 
 function labels = mypredict(values)
-    load("Data/shape-classifier.mat", "shapeclassifier");
-    predicted = pdist2(values, shapeclassifier.mr) < pdist2(values, shapeclassifier.mq);
-    
-    labels = [];
-    for i=1:length(predicted)
-        if predicted(i) == 1
-            labels = [labels; "rettangolare"];
-        else
-            labels = [labels; "quadrata"];
-        end
+load("Data/shape-classifier.mat", "shapeclassifier");
+predicted = pdist2(values, shapeclassifier.mr) < pdist2(values, shapeclassifier.mq);
+
+labels = [];
+for i=1:length(predicted)
+    if predicted(i) == 1
+        labels = [labels; "rettangolare"];
+    else
+        labels = [labels; "quadrata"];
     end
+end
 end

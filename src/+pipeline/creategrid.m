@@ -57,15 +57,15 @@ q = maxPair.points(1, 2) - maxSlope * maxPair.points(1, 1);
 grid = zeros(6, 4, 2);
 for r = 1 : 6
     c = centers(T == r, :);
-    
-    % calculate distances 
+
+    % calculate distances
     dist = zeros(length(c), 1);
     for k=1:length(c)
         num = abs(c(k,2) - (maxSlope * c(k,1) + q));
         den = sqrt(1 + maxSlope ^ 2);
         dist(k) = num / den;
     end
-    
+
     % sort by distance
     [~, indexes] = sort(dist);
     sorted = c(indexes, :);

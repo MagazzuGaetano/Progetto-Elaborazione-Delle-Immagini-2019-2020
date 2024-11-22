@@ -9,13 +9,13 @@ dataTrain = images(~idx,:);
 dataTest  = images(idx,:);
 
 % Save train set
- for i = 1 : numel(dataTrain)
-     im = imread(dataTrain{i});
-     imwrite(im, "Data/Train/" + num2str(i) + ".jpg");
- end
- 
- % Save test set
- for i = 1 : numel(dataTest)
-     im = imread(dataTest{i});
-     imwrite(im, "Data/Test/" + num2str(i) + ".jpg");
- end
+for i = 1 : numel(dataTrain)
+    im = imread(dataTrain{i});
+    imwrite(im, "Data/Train/" + num2str(i) + ".jpg");
+end
+
+% Save test set
+for i = 1 : numel(dataTest)
+    im = imread(dataTest{i});
+    imwrite(im, "Data/Test/" + num2str(i) + ".jpg");
+end

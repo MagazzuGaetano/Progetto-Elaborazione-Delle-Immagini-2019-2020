@@ -1,4 +1,4 @@
-function [accuracy, recall, precision] = cmetrics(gt, predicted)
+function [accuracy, recall, precision] = oldcmetrics(gt, predicted)
 %CMETRICS calcola le metriche di valutazione per la conformità
 
 cm = confusionmat(gt, predicted);
@@ -12,12 +12,12 @@ for i=1:nClasses
     if sum(cm(:, i)) ~= 0
         prec = cm(i,i) / sum(cm(:, i));
     end
-    
+
     rec = 0;
     if sum(cm(i, :)) ~= 0
         rec = cm(i,i) / sum(cm(i, :));
     end
-    
+
     precision = precision * prec;
     recall = recall * rec;
 end

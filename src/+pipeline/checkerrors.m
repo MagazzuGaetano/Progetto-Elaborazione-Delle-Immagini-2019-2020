@@ -58,14 +58,14 @@ conf1 = [
     1, 1, 1, 1, 1, 1;
     1, 1, 1, 1, 1, 1;
     3, 3, 3, 3, 3, 3;
-];
+    ];
 
 conf2 = [
     3, 3, 3, 3, 3, 3;
     1, 1, 1, 1, 1, 1;
     1, 1, 1, 1, 1, 1;
     2, 2, 2, 2, 2, 2;
-];
+    ];
 
 p1 = grid == conf1';
 p2 = grid == conf2';
@@ -91,7 +91,7 @@ end
 function out = getcode(choco)
 %GETCODE associa un codice ad ogni cioccolatino
 
-chocoType = classification.getchocotype(choco);
+chocoType = classification.choco.getchocotype(choco);
 
 if chocoType == "Ferrero Rocher" && existsstamp(choco)
     out = 1;

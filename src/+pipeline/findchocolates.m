@@ -9,9 +9,9 @@ props = regionprops(mask, 'MinorAxisLength');
 minorAxis = props.MinorAxisLength;
 
 if shape == "rettangolare"
-   [centers, radius] = handlerectangle(im, mask, minorAxis);
+    [centers, radius] = handlerectangle(im, mask, minorAxis);
 else
-   [centers, radius] = handlesquare(im, mask, minorAxis);
+    [centers, radius] = handlesquare(im, mask, minorAxis);
 end
 end
 
@@ -55,7 +55,7 @@ Cb = adapthisteq(Cb);
     'EdgeThreshold', 0.1, ...
     'ObjectPolarity', 'dark');
 
-[centers1, radius1] = circlefilter(im, centers, radii, metrics, [rmin rmax], alpha); 
+[centers1, radius1] = circlefilter(im, centers, radii, metrics, [rmin rmax], alpha);
 
 hsv = rgb2hsv(im);
 s = hsv(:,:,2);
@@ -64,7 +64,7 @@ s = adapthisteq(s);
 
 [centers, radii, metrics] = imfindcircles(s, [rmin rmax], ...
     'Method', 'TwoStage', ...
-    'Sensitivity', 0.85, ... 
+    'Sensitivity', 0.85, ...
     'EdgeThreshold', 0.1, ...
     'ObjectPolarity', 'dark');
 
@@ -108,13 +108,13 @@ function [centers, radii] = removeexternals(mask, centers, radii, rmin)
 keep = false(length(centers), 1);
 for k = 1 : length(centers)
     circle = utils.cropcircle(mask, centers(k, 1), centers(k, 2), rmin, true);
-    
+
     N = length(circle)^2;
     n = sum(circle == 0, 'all');
     if n/N <= 0.15
         keep(k) = 1;
-    end  
-    
+    end
+
 end
 
 centers = centers(keep, :);
@@ -132,12 +132,12 @@ for k = 1 : length(centers)
     otherCenters = centers([1:k-1, k+1:length(centers)], :);
     distances = vecnorm((otherCenters - centers(k, :))');
 
-    overlap = distances < alpha * 2 * radius; 
-    
+    overlap = distances < alpha * 2 * radius;
+
     if sum(overlap(:)) ~= 0
         ovCenters = otherCenters(overlap, :);
 
-        toRemove = [toRemove; ovCenters; centers(k, :)]; 
+        toRemove = [toRemove; ovCenters; centers(k, :)];
         mCenter = mean([ovCenters; centers(k, :)]);
         newCenters = [newCenters; mCenter];
     end

@@ -1,4 +1,4 @@
-function [Accuracy, FScore, TPR, PPV, recallRigetto] = metrics(gt, predicted, classes)
+function [Accuracy, FScore, TPR, PPV, recallRigetto] = cmetrics(gt, predicted, classes)
 %METRICS calcola le metriche per il classificatore dei cioccolatini
 
 cm = confusionmat(gt, predicted, 'order', classes);
@@ -34,7 +34,7 @@ for i = 1:num_labels
     if isnan(FScore)
         FScore = 0;
     end
-    
+
     recallRigetto = 0;
 end
 
