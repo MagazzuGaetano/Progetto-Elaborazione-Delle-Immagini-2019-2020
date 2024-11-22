@@ -20,11 +20,10 @@ errors = [];
 nStamps = 0;
 for i = 1 : length(centers)
     if nStamps == 24, break, end
-    
+
     x = centers(i, 1);
     y = centers(i, 2);
     choco = utils.cropcircle(im, x, y, radius, false);
-    choco = imresize(choco, [239 239]);
     if getcode(choco) == 1
         nStamps = nStamps + 1;
     else
@@ -50,7 +49,6 @@ for i = 1 : n
         x = centers(i, j, 1);
         y = centers(i, j, 2);
         choco = utils.cropcircle(im, x, y, radius, false);
-        choco = imresize(choco, [239 239]);
         grid(i, j) = getcode(choco);
     end
 end
@@ -95,11 +93,11 @@ function out = getcode(choco)
 
 chocoType = classification.getchocotype(choco);
 
-if chocoType == "ferrero_rocher" && existsstamp(choco)
+if chocoType == "Ferrero Rocher" && existsstamp(choco)
     out = 1;
-elseif chocoType == "ferrero_noir"
+elseif chocoType == "Ferrero Noir"
     out = 2;
-elseif chocoType == "raffaello"
+elseif chocoType == "Raffaello"
     out = 3;
 else
     out = 4;
@@ -107,9 +105,9 @@ end
 
 end
 
-function out = existsstamp(im)
+function [out] = existsstamp(im)
 %ISSTAMP verifica l'esistenza del bollino
-im = imresize(im, [239, 239]);
+im = imresize(im, [64, 64]); %[293 293]
 
 hsv = rgb2hsv(im);
 lab = rgb2lab(im);
@@ -123,16 +121,15 @@ b = (b + 128) / 255;
 S = S > graythresh(S);
 b = b > graythresh(b);
 B = B < graythresh(B);
-
 I1 = ~(S | b | B);
-
-I = imopen(I1, strel('disk', 5));
+I1 = imfill(I1, 'holes');
+I = imopen(I1, strel('disk', 3));
 
 if any(I(:))
     I = bwareafilt(I, 1);
-    out = sum(I(:)) > 150;
+    out = sum(I(:)) > 45; % il risultato con area minore ha area 48
 else
     out = false;
 end
-end
 
+end

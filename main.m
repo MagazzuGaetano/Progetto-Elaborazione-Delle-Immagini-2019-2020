@@ -24,5 +24,5 @@ end
 iscompliant = isempty(errors);
 
 % Show results
-showresults(im, errors);
+%showresults(im, errors);
 end
