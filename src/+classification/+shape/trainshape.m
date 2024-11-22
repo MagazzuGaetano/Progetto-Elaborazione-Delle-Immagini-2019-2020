@@ -22,7 +22,7 @@ save("Data/shape-classifier.mat", "shapeclassifier");
 train.predicted = mypredict(train.values);
 test.predicted = mypredict(test.values);
 
-classification.confchart(train, test);
+classification.plotcm(train, test);
 
 
 function labels = mypredict(values)

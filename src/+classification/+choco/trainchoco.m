@@ -39,7 +39,7 @@ test.predicted = convertCharsToStrings(tsPredicted);
 % confusion matrix
 train.labels = y_train;
 test.labels = y_test;
-metrics.confchart(train, test);
+metrics.plotcm(train, test);
 
 show_mistakes(test, classes);
 

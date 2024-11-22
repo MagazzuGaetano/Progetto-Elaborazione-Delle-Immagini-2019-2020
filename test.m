@@ -12,7 +12,7 @@ end
 
 gt = single(labels == "conforme");
 classes = [0, 1];
-[~, f, rec, pre, ~] = metrics.cmetrics(gt, predicted, classes);
+[~, f, rec, pre] = metrics.cmetrics(gt, predicted, classes);
 
 disp("F1: " + f);
 disp("Recall: " + rec);
