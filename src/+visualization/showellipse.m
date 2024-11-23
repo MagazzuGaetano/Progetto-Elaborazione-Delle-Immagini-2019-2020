@@ -1,40 +1,36 @@
-function showellipse(image, mask, showimage)
-%SHOWELLIPSE disegna ellisse, bounding box e assi di simmetria
-% mostra ellisse bounding box
-% passandogli il vettore s calcolabile con regionprops(...)
-% - bounding box
-% - eccentricity, orientation, centroid
-% - majoraxis, minoraxis
+function showellipse(image, mask, showImage)
+%SHOWELLIPSE plot minimum enclosing ellipse, bounding box and axes of symmetry given an object binary mask
+
 s = regionprops(mask, 'BoundingBox', 'Eccentricity', 'MajorAxisLength', ...
     'MinorAxisLength', 'Orientation', 'Centroid');
 
-if (showimage)
+if (showImage)
     imshow(image);
     hold on;
 end
 
-%rectangle('Position', s.BoundingBox, 'EdgeColor', 'r');
+rectangle('Position', s.BoundingBox, 'EdgeColor', 'r');
 
-phi = linspace(0,2*pi,50);
+phi = linspace(0, 2 * pi, 50);
 cosphi = cos(phi);
 sinphi = sin(phi);
 
 for k = 1:length(s)
-    xbar = s(k).Centroid(1);
-    ybar = s(k).Centroid(2);
+    xBar = s(k).Centroid(1);
+    yBar = s(k).Centroid(2);
 
     a = s(k).MajorAxisLength/2;
     b = s(k).MinorAxisLength/2;
 
-    theta = pi*s(k).Orientation/180;
+    theta = pi * s(k).Orientation/180;
     R = [ cos(theta)   sin(theta)
-        -sin(theta)   cos(theta)];
+         -sin(theta)   cos(theta)];
 
-    xy = [a*cosphi; b*sinphi];
-    xy = R*xy;
+    xy = [a * cosphi; b * sinphi];
+    xy = R * xy;
 
-    x = xy(1,:) + xbar;
-    y = xy(2,:) + ybar;
+    x = xy(1,:) + xBar;
+    y = xy(2,:) + yBar;
 
     dist = vecnorm(xy)';
 

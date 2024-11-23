@@ -1,13 +1,15 @@
 function [accuracy, f1, tpr, ppv] = cmetrics(gt, predicted, classes)
-%CMETRICS calcola le metriche per il classificatore dei cioccolatini
+%CMETRICS Compute classification metrics (accuracy, f1, recall, precision)
 
 cm = confusionmat(gt, predicted, 'order', classes);
 
 num_labels = length(unique(gt));
+
 f1 = zeros(1, num_labels);   % Preallocate F1 for each class
 tpr = zeros(1, num_labels);  % Preallocate TPR for each class
 ppv = zeros(1, num_labels);  % Preallocate PPV for each class
 acc = zeros(1, num_labels);  % Preallocate Accuracy for each class
+
 for i = 1:num_labels
     tp = cm(i, i);
     fp = sum(cm(:, i), 1) - tp;

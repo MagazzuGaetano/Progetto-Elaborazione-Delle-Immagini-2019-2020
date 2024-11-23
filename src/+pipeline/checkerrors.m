@@ -1,4 +1,4 @@
-function errors = checkerrors(im, centers, radius)
+function errors = checkerrors(im, centers, radius, classifier)
 %CHECK_ERRORS controllo degli errori
 
 centers = centers * 5;
@@ -6,14 +6,14 @@ radius = radius * 5;
 
 [n, m, ~] = size(centers);
 if n == 6 && m == 4
-    errors = checkrectangle(im, centers, radius);
+    errors = checkrectangle(im, centers, radius, classifier);
 else
-    errors = checksquare(im, centers, radius);
+    errors = checksquare(im, centers, radius, classifier);
 end
 
 end
 
-function errors = checksquare(im, centers, radius)
+function errors = checksquare(im, centers, radius, classifier)
 %CHECKSQUARE controllo per le scatole quadrate
 
 errors = [];
@@ -24,7 +24,7 @@ for i = 1 : length(centers)
     x = centers(i, 1);
     y = centers(i, 2);
     choco = utils.cropcircle(im, x, y, radius, false);
-    if getcode(choco) == 1
+    if getcode(choco, classifier) == 1
         nStamps = nStamps + 1;
     else
         x = centers(i, 1);
@@ -39,7 +39,7 @@ end
 
 end
 
-function errors = checkrectangle(im, centers, radius)
+function errors = checkrectangle(im, centers, radius, classifier)
 %CHECKRECTANGLE controllo per le scatole rettangolari
 
 [n, m, ~] = size(centers);
@@ -49,7 +49,7 @@ for i = 1 : n
         x = centers(i, j, 1);
         y = centers(i, j, 2);
         choco = utils.cropcircle(im, x, y, radius, false);
-        grid(i, j) = getcode(choco);
+        grid(i, j) = getcode(choco, classifier);
     end
 end
 
@@ -88,10 +88,10 @@ for i = 1 : n
 end
 end
 
-function out = getcode(choco)
+function out = getcode(choco, classifier)
 %GETCODE associa un codice ad ogni cioccolatino
 
-chocoType = classification.choco.getchocotype(choco);
+chocoType = classification.choco.getchocotype(choco, classifier);
 
 if chocoType == "Ferrero Rocher" && existsstamp(choco)
     out = 1;

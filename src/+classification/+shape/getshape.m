@@ -1,20 +1,7 @@
-function shape = getshape(mask)
-%GETSHAPE
+function shape = getshape(mask, classifier)
+%GETSHAPE Determine the shape of an image using eccentricity.
 
 props = regionprops(mask, "Eccentricity");
-eccentricity = props.Eccentricity;
-shape = predict(eccentricity);
+shape = classification.shape.predictshape(props.Eccentricity, classifier);
 
-end
-
-function out = predict(values)
-%PREDICT
-
-load("Data/shape-classifier.mat", "shapeclassifier");
-predicted = pdist2(values, shapeclassifier.mr) < pdist2(values, shapeclassifier.mq);
-if predicted == 1
-    out = "rettangolare";
-else
-    out = "quadrata";
-end
 end

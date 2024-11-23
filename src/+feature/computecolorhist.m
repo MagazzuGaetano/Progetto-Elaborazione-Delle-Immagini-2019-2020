@@ -1,5 +1,8 @@
-function out = computeColorHist(image, N, n_bins)
+function out = computecolorhist(image, N, n_bins)
+%COMPUTECOLORHIST Compute the local color histogram of an image with N blocks.
+
 S = size(image);
+
 if S(2) > 2
     [r, c, ch] = size(image);
 else
@@ -9,7 +12,7 @@ end
 
 if (N > r || N > c)
     image = reshape(image, [], ch);
-    out = color_hist(image, n_bins);
+    out = colorhist(image, n_bins);
 else
     out = [];
     for i=1:N:r
@@ -20,21 +23,23 @@ else
 
             patch = image(i:(i+N-1), j:(j+N-1), :);
             patch = reshape(patch, [], ch);
-            out = [out, color_hist(patch, n_bins)];
+            out = [out, colorhist(patch, n_bins)];
         end
     end
 end
+
 end
 
-function H = color_hist(im, n_bins)
-% given an image with size (r, c, ch)
-% n_bins is a vector with size (ch, 1)
-% sulle 3 colonne abbiamo ora i 3 canali colore R, G, B
-im=reshape(im,[],3);
-H=[];
+function H = colorhist(im, n_bins)
+%COLOR_HIST Compute the histogram of an image in each color channel
+
+im = reshape(im, [], 3);
+
+H = [];
 for ch=1:3
-    tmp=hist(im(:,ch),linspace(0, 1, n_bins(ch)));
-    tmp=tmp./sum(tmp);
+    tmp = hist(im(:,ch), linspace(0, 1, n_bins(ch)));
+    tmp = tmp ./ sum(tmp);
     H = [H tmp];
 end
+
 end

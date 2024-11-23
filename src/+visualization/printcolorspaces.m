@@ -1,5 +1,5 @@
 function printcolorspaces(im)
-%PRINT_COLOR_SPACES Shows different color spaces of an image.
+%PRINT_COLOR_SPACES Shows histograms of different color spaces of an image.
 
 rgb = im;
 ycbcr = rgb2ycbcr(im);

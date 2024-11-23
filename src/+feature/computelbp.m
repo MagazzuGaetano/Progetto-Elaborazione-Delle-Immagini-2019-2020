@@ -1,9 +1,12 @@
-function out = computelbp(image, CellSize, NumNeighbors, Radius, Upright)
+function out = computelbp(image, cellSize, numNeighbors, radius, upright)
+%COMPUTELBP Compute the LBP feature vector of an image.
+
 out = extractLBPFeatures(image, ...
-  'CellSize', CellSize, ... % [64 64]
-  'NumNeighbors', NumNeighbors, ... % 16
-  'Radius', Radius, ... % 2
-  'Upright', Upright ... % true
+  'CellSize', cellSize, ... % [64 64]
+  'NumNeighbors', numNeighbors, ... % 16
+  'Radius', radius, ... % 2
+  'Upright', upright ... % true
   );
+
 end
 

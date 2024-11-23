@@ -1,4 +1,6 @@
 function printcolorimages(im)
+%PRINT_COLOR_SPACES Shows different color spaces of an image.
+    
 rgb = im;
 ycbcr = rgb2ycbcr(im);
 hsv = rgb2hsv(im);
