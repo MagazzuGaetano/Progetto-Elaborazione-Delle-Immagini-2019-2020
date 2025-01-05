@@ -1,9 +1,9 @@
-function trainshape()
-%TRAINSHAPE Train a minimum distance classifier using eccentricity to predict the shape.
+% TRAIN SHAPE 
+% Train a minimum distance classifier using eccentricity to predict the shape.
 
 addpath(genpath("src"));
 
-[images, labels] = utils.readlabels("./Data/lbl_forma.csv", "Data/Acquisizioni/");
+[images, labels] = utils.readlabels(fullfile("Data", "lbl_forma.csv"), fullfile("Data", "Acquisizioni"));
 classes = ["quadrata", "rettangolare"];
 
 nImages = numel(images);
@@ -12,6 +12,7 @@ eccentricity = zeros(nImages, 1);
 for i = 1 : nImages
     im = imread(images{i});
     resized = imresize(im, 1/5);
+    
     mask = pipeline.findbox(resized);
     props = regionprops(mask, 'eccentricity');
     eccentricity(i) = props.Eccentricity;
@@ -32,12 +33,11 @@ test.predicted = classification.shape.predictshape(test.values, shapeClassifier)
 metrics.plotcm(train, classes, figure("Name", "Train"));
 metrics.plotcm(test, classes, figure("Name", "Test"));
 
-save("Data/shape-classifier.mat", "shapeClassifier");
+save(fullfile("Data", "shape-classifier.mat"), "shapeClassifier");
 
-end
 
 function [train, test] = partdata(values, labels)
-%PARTDATA Split dataset in train and test sets (80% train, 20% test).
+% PARTDATA Split dataset in train and test sets (80% train, 20% test).
 
 cv = cvpartition(labels, "Holdout", 0.2);
 
