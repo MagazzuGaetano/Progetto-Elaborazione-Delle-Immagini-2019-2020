@@ -1,8 +1,10 @@
 function chocoType = predictchoco(features, classifier)
 %PREDICTCHOCO Predict the type of a chocolate given the features of an image.
 
-normalized = (features - classifier.mean) ./ classifier.std;
-predicted = predict(classifier.model, normalized);
+normalizedFeats = (features - classifier.mean) ./ classifier.std;
+pcaFeats = (normalizedFeats - classifier.pcaMu)*classifier.pcaCoeff;
+
+predicted = predict(classifier.model, pcaFeats);
 chocoType = convertCharsToStrings(predicted);
 
 end
