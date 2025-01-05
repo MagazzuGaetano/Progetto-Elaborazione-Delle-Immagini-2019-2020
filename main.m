@@ -28,7 +28,7 @@ for i = 1:numel(images)
 
     if ~double(isCompliant)
         figure('Name', "Immagine " + i + " pred: " + predicted(i) + " gt: " + labels(i));
-        visualization.showresults(im, errors);
+        visualization.showresults(im, errors, false);
         pause(3);
         close;
     end
