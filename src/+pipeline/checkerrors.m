@@ -4,11 +4,14 @@ function errors = checkerrors(im, centers, radius, classifier)
 centers = centers * 5;
 radius = radius * 5;
 
+radius = floor(radius);
+im_pad = padarray(im, [radius radius]);
+
 [n, m, ~] = size(centers);
 if n == 6 && m == 4
-    errors = checkrectangle(im, centers, radius, classifier);
+    errors = checkrectangle(im_pad, centers, radius, classifier);
 else
-    errors = checksquare(im, centers, radius, classifier);
+    errors = checksquare(im_pad, centers, radius, classifier);
 end
 
 end

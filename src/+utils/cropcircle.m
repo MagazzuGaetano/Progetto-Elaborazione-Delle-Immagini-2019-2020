@@ -10,7 +10,6 @@ if keepCorners
     cropped = imcrop(image, rect);
 else
     rect = round([x, y, 2 * radius, 2 * radius]);
-    image = padarray(image, [radius radius], 0);
     cropped = imcrop(image, rect);
 
     mask = fspecial('disk', radius) ~= 0;
