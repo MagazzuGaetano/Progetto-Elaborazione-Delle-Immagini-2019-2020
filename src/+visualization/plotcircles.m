@@ -6,12 +6,19 @@ if ~exist('title', 'var')
 end
 
 h = figure;
-imshow(image); title(text);
+
+imshow(image); 
+title(text);
+
 hold on;
 viscircles(centers, ...
     radii, ...
     'EdgeColor', 'b', ...
     'LineWidth', 3); axis image;
-pause(1);
+
+pause(10);
+
+hold off;
 close(h);
+
 end
