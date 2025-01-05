@@ -6,10 +6,11 @@ if ~exist('fig', 'var')
 end
 
 confusionchart(data.labels, data.predicted, ...
-    'RowSummary','row-normalized','ColumnSummary','column-normalized');
+    'RowSummary','row-normalized', ...
+    'ColumnSummary','column-normalized');
 
 [~, F, Recall, Precision] = metrics.cmetrics(data.labels, data.predicted, classes);
 
-title("F1: " + round(F, 2) + " Recall: " + round(Recall, 2) + " Precision: " + round(Precision, 2));
+title("F1: " + round(F, 3) + " Recall: " + round(Recall, 3) + " Precision: " + round(Precision, 3));
 
 end
