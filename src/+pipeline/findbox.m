@@ -1,12 +1,12 @@
 function mask = findbox(im)
-%FIND_BOX
+%FIND_BOX edge based segmentation of the box
 
 im = rgb2gray(im);
 
-HIGH_THRESHOLD = 0.137; % scelta sperimentalmente 0.137
-SIGMA = 0.8; % dato N = 5 sigma ricavata da N = (2.5 * sigma) * 2 - 1
+highT = 0.137; % empirical threshold
+sigma = 0.8; % estimated by N = (2.5 * sigma) * 2 - 1 with N = 5
 
-bw = edge(im, 'canny', HIGH_THRESHOLD, SIGMA);
+bw = edge(im, 'canny', highT, sigma);
 
 bw = imdilate(bw, strel('disk', 3));
 bw = imfill(bw, 'holes');

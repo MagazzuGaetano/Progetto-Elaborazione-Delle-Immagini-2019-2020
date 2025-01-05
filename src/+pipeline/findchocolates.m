@@ -1,9 +1,5 @@
 function [centers, radius] = findchocolates(im, mask, shape)
-%FINDCHOCOLATES trova i cioccolatini
-% prende in input l'immagine già segmentata
-% e la sua maschera binaria
-% ritorna i centri e il raggio dei cioccolatini
-% stimati in base al tipo di scatola
+%FINDCHOCOLATES Find chocolates in an rectangular or square box and return the centers and radius.
 
 props = regionprops(mask, 'MinorAxisLength');
 minorAxis = props.MinorAxisLength;
@@ -13,12 +9,14 @@ if shape == "rettangolare"
 else
     [centers, radius] = handlesquare(im, mask, minorAxis);
 end
+
 end
 
 function [centers, radius] = handlerectangle(im, mask, minorAxis)
-%HANDLERECTANGLE
+%HANDLERECTANGLE Identifies chocolates within a rectangular box by finding and 
+% filtering circles using hough transform.
 
-% stimo range rmax e rmin con l'asse minore
+% estimate rmax and rmin ranges with the minor axis
 rmax = fix(minorAxis / (8 - 0.75));
 rmin = fix(rmax / 3);
 alpha = 0.7;
@@ -38,8 +36,10 @@ s = adapthisteq(s);
 end
 
 function [centers, radius] = handlesquare(im, mask, minorAxis)
+%HANDLESQUARE Identifies chocolates within a square box by finding and 
+% filtering circles using hough transform.
 
-% stimo range rmax e rmin con l'asse minore
+% estimate rmax and rmin ranges with the minor axis
 rmax = fix(minorAxis / 8);
 rmin = fix(rmax / 3);
 alpha = 0.45;
@@ -79,31 +79,30 @@ radius = mean(radii);
 end
 
 function [centers, radius] = circlefilter(im, centers, radii, metrics, range, k)
-% CIRCLEFILTER
+% CIRCLEFILTER Filters detected circles by removing those with low accumulator values, proximity to the box border, or overlap.
 
-% rimuovo i cerchi che non rispettano una certa metrica
+% remove circles that have the accumulator value below a certain threshold.
 centers = centers(metrics > 0.2, :);
 radii = radii(metrics > 0.2);
 
-% erosione bordo della scatola
+% erode the border of the box
 hsv = rgb2hsv(im);
 bw = hsv(:,:,2) > 0.5;
 bw = imclose(bw, strel('disk', fix(range(2))));
 bw = imerode(bw, strel('disk', fix(range(1))));
 
-% rimozione cerchi sul bordo della scatola
+% remove circles that are too close to the border
 [centers, radii] = removeexternals(bw, centers, radii, range(1));
 
-% aggiusto dimensioni dei raggi (media)
+% adjust circle radius (mean)
 radius = mean(radii);
 
-% rimozione overlap
+% remove overlaps
 [centers, radius] = removeoverlap(centers, radius, k);
 end
 
 function [centers, radii] = removeexternals(mask, centers, radii, rmin)
-%REMOVEEXTERNALS rimuove i cerchi(immagine croppata) con il 15% percento
-% di pixel neri(valore 0)
+% REMOVEEXTERNALS remove circles (cropped chocolates) with 15% of black pixels (background)
 
 keep = false(length(centers), 1);
 for k = 1 : length(centers)
@@ -122,9 +121,8 @@ radii = radii(keep);
 end
 
 function [centers, radius] = removeoverlap(centers, radius, alpha)
-%REMOVEOVERLAP rimpiazza i cerchi vicini,
-% vicinanza espressa tramite (alpha * 2 * radius),
-% mediano tali cerchi
+% REMOVEOVERLAP remove overlapping circles that are too close by averaging their centers
+% The distance is given by alpha * 2 * radius
 
 newCenters = [];
 toRemove = [];

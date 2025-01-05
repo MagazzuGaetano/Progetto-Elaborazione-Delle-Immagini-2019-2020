@@ -1,4 +1,5 @@
 function [isCompliant, errors] = checkbox(im, shapeClassifier, chocoClassifier)
+%CHECKBOX Check if a box is compliant and return the errors
 
 % Downscale the image
 resized = imresize(im, 1/5);

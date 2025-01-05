@@ -1,5 +1,5 @@
 function grid = creategrid(centers)
-%CREATEGRID genera la matrice della disposizione dei centri
+%CREATEGRID compute the center layout matrix
 
 % assuming there must be 24 points
 if length(centers) > 24
