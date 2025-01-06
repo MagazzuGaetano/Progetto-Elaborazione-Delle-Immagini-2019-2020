@@ -1,34 +1,71 @@
-# Progetto elaborazione delle immagini 2019/2020
+## Descrizione Nuovi Dati
 
-* Questa applicazione è un ipotetico controllo di qualità del
-  confezionamento di scatole di cioccolatini.
-* L’applicazione data una fotografia di una scatola di cioccolatini ne valuta la sua
-  conformità e ne mostra gli eventuali errori.
-* Per questo progetto le uniche scatole di cioccolatini considerate sono le seguenti:
- 
-![](https://gitlab.com/beppe15/progetto-elaborazione-delle-immagini/uploads/72bd6c4de0328afff35c30a5ed853233/Screenshot_2020-02-22_13-04-49.png)
-![](https://gitlab.com/beppe15/progetto-elaborazione-delle-immagini/uploads/c7617b95df26fc7258b057b2d624ff52/Screenshot_2020-02-22_13-04-13.png)
+Il dataset delle scatole di cioccolatini consiste di 64 immagini, che sono suddivise in conformi e non conformi. Di seguito è riportata la distribuzione:
 
-# Una scatola NON è conforme se:
-
-* Mancano dei cioccolatini.
-* I cioccolatini sono in posizione non corretta.
-* Mancano i bollini sui cioccolatini (esclusivamente i ferrero rocher).
-* Ci sono degli elementi estranei nella scatola.
-* (La presenza all’esterno della scatola di oggetti NON influenza la conformità della scatola).
-
-# Risultato classificazione
-![](https://gitlab.com/beppe15/progetto-elaborazione-delle-immagini/uploads/6e164e1369bdae3b5ffce3be60c564e6/Screenshot_2020-02-22_13-33-20.png)
-![](https://gitlab.com/beppe15/progetto-elaborazione-delle-immagini/uploads/8216a5f373493a61598361ec02b9bdea/Screenshot_2020-02-22_13-34-02.png)
+| Classe       	| Training 	| Test 	| Totale 	|
+|--------------	|:---------:|:-----:|:-------:|
+| conforme     	| 33       	| 5    	| 38     	|
+| non_conforme 	| 19       	| 7    	| 26     	|
+| Totale       	| 52       	| 12   	| 64     	|
 
 
-# Visualizzazione eventuali errori
-![](https://gitlab.com/beppe15/progetto-elaborazione-delle-immagini/uploads/055a150155b3e1bf9d0c65d219fe9b24/Screenshot_2020-02-22_13-33-42.png)
+Un altro dataset è stato creato con i singoli cioccolatini estratti dalle immagini, suddivisi per tipo (Ferrero Rocher, Ferrero Noir, Raffaello, Rejection):
 
-# Implementazione Matlab
+| Classe       	  | Training 	| Test 	| Totale 	|
+|--------------	  |:---------:|:-----:|:-------:|
+| Ferrero Noir 	  | 155      	| 51   	| 206    	|
+| Ferrero Rocher 	| 857      	| 162  	| 1019   	|
+| Raffaello     	| 159      	| 52   	| 211    	|
+| Rejection     	| 105      	| 23   	| 128    	|
+| Totale        	| 1276     	| 288  	| 1564   	|
 
-* main.m - contiene la funzione che data un immagine ritorna la conformità.
-* maintest.m - valuta la conformità di tutte le immagini.
-* +classification - contiene una serie di script e funzioni per la classificazione.
-* +utils - funzioni utili (comprese quelle oer il calcolo delle features).
-* +classification/trainchoco.m e +classification/trainshape.m - eseguono il training dei classificatori e la valutazione (matrice di confuzione).
+
+## Miglioramenti
+
+Il codice e la pipeline sono stati ristrutturati per ottenere maggiore modularità ed efficienza. Inoltre, la classificazione dei cioccolatini e la gestione degli errori sono stati migliorati.
+
+### Classificazione dei Cioccolatini
+
+La classificazione dei cioccolatini è stata perfezionata introducendo nuove feature e migliorando il modello di classificazione. 
+
+Le feature che sono state considerate sono:
+
+- Handcrafted Features: Istogramma locale HSV + Local Binary Pattern (LBP)
+- Deep Features: ResNet18
+
+In aggiunta, è stata utilizzata la tecnica di Principal Component Analysis (PCA) per ridurre la dimensionalità delle feature. 
+
+Inoltre, l'addestramento e la valutazione del modello sono stati migliorati tramite l'ottimizzazione degli iperparametri usando un metodo di cross-validation con 10-fold.
+
+  
+### Gestione degli Errori
+
+Gli eventuali errori sono stati identificati e categorizzati per poterli visualizzare in maniera più dettagliata.
+
+Gli errori sono stati suddivisi in tre categorie: posizionamento errato (per le scatole rettangolari), bollini mancanti (per i Ferrero Rocher), e tutti gli altri sono stati raggruppati nella categoria di rigetto.
+
+## Risultati Test
+
+### Classificazione dei Cioccolatini
+
+| Local HSV Histogram + LBP | ResNet18   |
+|-------------------|--------------------|
+| <img src="Images/choco-hsv+lbp+pca.png" width="500"> | <img src="Images/choco-resnet18+pca.png" width="500"> |
+
+
+### Classificazione di Conformità 
+
+<img src="Images/test-boxes.png" width="500">
+
+
+## Limitazioni e Sviluppi Futuri
+
+Nonostante i miglioramenti che sono stati effettuati, ci sono ancora delle limitazioni che potrebbero essere risolte in futuro.
+
+- La quantità di dati è limitata (solo 64 immagini). Inoltre, la distribuzione delle classi dei cioccolatini è sbilanciata. Nello specifico la classe rigetto, come bollini mancanti e oggetti estranei, è piuttosto poco rappresentata.
+
+- Il sistema attualmente non è in grado di gestire nuovi tipi di anomalie o di classificarle con precisione, a causa della scarsità di dati disponibili. In futuro, sarebbe necessario raccogliere più dati o adottare un approccio non supervisionato basato su tecniche di novelty detection.
+
+- La distorsione prospettica potrebbe portare alcuni bollini ad essere tagliati durante il rilevamento dei cerchi con la trasformata di Hough, quindi effettuare il warping della scatola potrebbe evitare potenziali errori.
+
+- La segmentazione della scatola può essere migliorata adottando la trasformata Watershed per separare eventuali oggetti attaccati alla scatola.
