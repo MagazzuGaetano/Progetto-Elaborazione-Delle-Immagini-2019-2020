@@ -44,6 +44,10 @@ Gli eventuali errori sono stati identificati e categorizzati per poterli visuali
 
 Gli errori sono stati suddivisi in tre categorie: posizionamento errato (per le scatole rettangolari), bollini mancanti (per i Ferrero Rocher), e tutti gli altri sono stati raggruppati nella categoria di rigetto.
 
+| Scatola Rettagonale |  Scatola Quadrata  |
+|:-------------------:|:--------------------:|
+| <img src="Images/error-types.png" width="500"> | <img src="Images/error-types2.png" width="500"> |
+
 ## Risultati Test
 
 ### Classificazione dei Cioccolatini
@@ -55,7 +59,7 @@ Gli errori sono stati suddivisi in tre categorie: posizionamento errato (per le 
 
 ### Classificazione di Conformità 
 
-<img src="Images/test-boxes.png" width="500">
+<img src="Images/test-boxes.png" width="400">
 
 
 ## Limitazioni e Sviluppi Futuri
