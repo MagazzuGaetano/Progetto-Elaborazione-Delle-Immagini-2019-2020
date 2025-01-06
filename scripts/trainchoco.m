@@ -11,11 +11,11 @@ trainPath = fullfile(pwd, "Data", "Train", "Chocolates");
 testPath = fullfile(pwd, "Data", "Test", "Chocolates");
 
 % feature extraction
-[yTrain, xTrain] = generatedataset(convertStringsToChars(trainPath), classes);
-[yTest, xTest] = generatedataset(convertStringsToChars(testPath), classes);
+% [yTrain, xTrain] = generatedataset(convertStringsToChars(trainPath), classes);
+% [yTest, xTest] = generatedataset(convertStringsToChars(testPath), classes);
 
-% [yTrain, xTrain, ~, ~] = generatedeepdataset(trainPath, false, 0);
-% [yTest, xTest, ~, ~] = generatedeepdataset(testPath, false, 0);
+[yTrain, xTrain, ~, ~] = generatedeepdataset(trainPath, false, 0);
+[yTest, xTest, ~, ~] = generatedeepdataset(testPath, false, 0);
 
 % standardize data
 trainMean = mean(xTrain);

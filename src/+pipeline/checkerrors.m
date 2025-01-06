@@ -1,4 +1,4 @@
-function errors = checkerrors(im, centers, radius, classifier)
+function errors = checkerrors(im, centers, radius, classifier, net)
 %CHECKERRORS Check errors in a box and return the errors with their type and position
 %
 % The type of error are:
@@ -14,14 +14,14 @@ im_pad = padarray(im, [radius radius]);
 
 [n, m, ~] = size(centers);
 if n == 6 && m == 4
-    errors = checkrectangle(im_pad, centers, radius, classifier);
+    errors = checkrectangle(im_pad, centers, radius, classifier, net);
 else
-    errors = checksquare(im_pad, centers, radius, classifier);
+    errors = checksquare(im_pad, centers, radius, classifier, net);
 end
 
 end
 
-function errors = checksquare(im, centers, radius, classifier)
+function errors = checksquare(im, centers, radius, classifier, net)
 %CHECKSQUARE check square boxes and return the errors
 %
 % Classify each chocolate in the box and count the number of stamps.
@@ -38,7 +38,7 @@ for i = 1 : length(centers)
     y = centers(i, 2);
 
     choco = utils.cropcircle(im, x, y, radius, false);
-    chocoType = getcode(choco, classifier);
+    chocoType = getcode(choco, classifier, net);
 
     if chocoType == 1
         nStamps = nStamps + 1;
@@ -55,7 +55,7 @@ end
 
 end
 
-function errors = checkrectangle(im, centers, radius, classifier)
+function errors = checkrectangle(im, centers, radius, classifier, net)
 %CHECKRECTANGLE check rectangle boxes and return the errors
 %
 % Classify each chocolate in the box and check the position of the chocolates
@@ -70,7 +70,7 @@ for i = 1 : n
         x = centers(i, j, 1);
         y = centers(i, j, 2);
         choco = utils.cropcircle(im, x, y, radius, false);
-        grid(i, j) = getcode(choco, classifier);
+        grid(i, j) = getcode(choco, classifier, net);
 
         if grid(i, j) == 4
             errors(end + 1) = struct('x', x, 'y', y, 'error_type', 'reject');
@@ -116,7 +116,7 @@ for i = 1 : n
 end
 end
 
-function [out] = getcode(choco, classifier)
+function [out] = getcode(choco, classifier, net)
 %GETCODE predicts the type of a chocolate given a classifier model
 %
 % Types:
@@ -126,7 +126,7 @@ function [out] = getcode(choco, classifier)
 % 4: Rejection
 % 5: Stamp not found
 
-chocoType = classification.choco.getchocotype(choco, classifier);
+chocoType = classification.choco.getchocotype(choco, classifier, net);
 
 if chocoType == "Ferrero Rocher"
     if checkstamp(choco)

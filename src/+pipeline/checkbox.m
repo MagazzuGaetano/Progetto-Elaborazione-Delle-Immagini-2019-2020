@@ -1,4 +1,4 @@
-function [isCompliant, errors] = checkbox(im, shapeClassifier, chocoClassifier)
+function [isCompliant, errors] = checkbox(im, shapeClassifier, chocoClassifier, net)
 %CHECKBOX Check if a box is compliant and return the errors
 
 % Downscale the image
@@ -17,9 +17,9 @@ shape = classification.shape.getshape(mask, shapeClassifier);
 % Look for errors
 if shape == "rettangolare"
     grid = pipeline.creategrid(centers);
-    errors = pipeline.checkerrors(im, grid, radii, chocoClassifier);
+    errors = pipeline.checkerrors(im, grid, radii, chocoClassifier, net);
 else
-    errors = pipeline.checkerrors(im, centers, radii, chocoClassifier);
+    errors = pipeline.checkerrors(im, centers, radii, chocoClassifier, net);
 end
 
 isCompliant = isempty(errors);

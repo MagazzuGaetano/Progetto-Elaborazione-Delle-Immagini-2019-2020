@@ -5,6 +5,7 @@ addpath(genpath("src"));
 
 load(fullfile("Data", "shape-classifier.mat"), "shapeClassifier");
 load(fullfile("Data", "choco-classifier.mat"), "chocoClassifier");
+net = resnet18;
 
 %[images, labels] = utils.readlabels(fullfile("Data", "lbl_conformità.csv"), fullfile("Data", "Acquisizioni"));
 [images, labels] = utils.readlabels(fullfile("Data", "test.csv"), fullfile("Data", "Acquisizioni"));
@@ -16,7 +17,7 @@ for i = 1:numel(images)
 
     im = imread(images{i});
 
-    [isCompliant, errors] = pipeline.checkbox(im, shapeClassifier, chocoClassifier);
+    [isCompliant, errors] = pipeline.checkbox(im, shapeClassifier, chocoClassifier, net);
 
     if isCompliant
         predicted(i) = "conforme";
